@@ -1,3 +1,11 @@
+## Comments for AMD GPU
+
+This repo is forked from https://github.com/anothermartz/Easy-Wav2Lip and extend it to run with AMD GPU with patches. 
+
+*The original repo do not test with AMD GPU.*
+
+Please just jump to new session [Linux installation with AMD GPU](#linux-installation-with-amd-gpu) if you want to run it with AMD GPU supported by ROCm in Linux. I tested it with Ubntu22.04+ROCm6.1+AMD Radeon W7900.
+
 ## Contents:
 1. [Introduction](https://github.com/anothermartz/Easy-Wav2Lip?tab=readme-ov-file#easy-wav2lip-improves-wav2lip-video-lipsyncing-making-it)
 2. [Google Colab version (free cloud computing in-browser)](https://github.com/anothermartz/Easy-Wav2Lip?tab=readme-ov-file#google-colab)
@@ -138,6 +146,42 @@ Now to run Easy-Wav2Lip:<br>
 ```
 source Easy-Wav2Lip-venv/bin/activate
 cd Easy-Wav2Lip
+./run_loop.sh
+```
+
+### Linux installation with AMD GPU
+I do patches in requirement.txt and inference.py for AMD GPU supported by ROCm with defualt branch 'v8.3_rocm' of this repo.
+
+Sets up a venv, installs ffmpeg to it and then installs Easy-Wav2Lip:
+1. Open Terminal and navigate to the folder you want to install Easy-Wav2Lip-ROCm using cd
+EG:
+`cd ~/Documents`
+
+2. Copy and paste the following code into your terminal window:
+Note: 2 folders will be made in this location: Easy-Wav2Lip and Easy-Wav2Lip-venv (an isolated python install)
+```
+python3.10 -m venv Easy-Wav2Lip-venv
+source EW2Lvenv/bin/activate
+python -m pip install --upgrade pip
+python -m pip install requests
+for file in ffmpeg ffprobe ffplay; do
+    curl -O "https://evermeet.cx/ffmpeg/${file}-6.1.1.zip"
+    unzip "${file}-6.1.1.zip"
+done
+mv -f ffmpeg ffprobe ffplay /Easy-Wav2Lip-venv/bin/
+rm -f ffmpeg-6.1.1.zip ffprobe-6.1.1.zip ffplay-6.1.1.zip
+source EW2Lvenv/bin/activate
+git clone https://github.com/alexhegit/Easy-Wav2Lip-ROCm.git
+cd Easy-Wav2Lip-ROCm
+pip install -r requirements.txt
+python install.py
+```
+Now to run Easy-Wav2Lip-ROCm:<br>
+3. Close and reopen terminal then cd to the same directory as in Step 1.<br>
+4. Paste the following code:
+```
+source Easy-Wav2Lip-venv/bin/activate
+cd Easy-Wav2Lip-ROCm
 ./run_loop.sh
 ```
 
