@@ -699,6 +699,9 @@ def main():
         img_batch = torch.FloatTensor(np.transpose(img_batch, (0, 3, 1, 2))).to(device)
         mel_batch = torch.FloatTensor(np.transpose(mel_batch, (0, 3, 1, 2))).to(device)
 
+        model.to('cuda') #Alex He: workaround for rocm
+        #print("Model in GPU:"+str(next(model.parameters()).is_cuda)) # Debug: to check if the model in GPU
+
         with torch.no_grad():
             pred = model(mel_batch, img_batch)
 
